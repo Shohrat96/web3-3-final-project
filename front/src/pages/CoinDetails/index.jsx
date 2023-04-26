@@ -15,7 +15,7 @@ const CoinDetails = () => {
         getCoinDetails(id).then(data => setCoin(data[0]))
     }, [])
 
-    const { image, back_image, issuing_country, composition, quality, denomination, year, weight, price } = coin;
+    const {title, short_desc, image, back_image, issuing_country, composition, quality, denomination, year, weight, price } = coin;
 
     return (
         <div className="details-wrapper">
@@ -29,8 +29,8 @@ const CoinDetails = () => {
             </div>
 
             <div className="coin-desc">
-                <h1>Coin Title</h1>
-                <p className="coin-short-desc">Short Desc</p>
+                <h1 className="coin-title">{title}</h1>
+                <p  className="coin-short-desc">{short_desc}</p>
                 {/* {
                     paragraphs.map(item => (
                         <p>{item.content}</p>
