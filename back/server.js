@@ -54,6 +54,23 @@ app.get('/categories/:id', (req, res) => {
     )
 })
 
+app.get("/coins/:id", (req, res) => {
+    const id = +req.params.id;
+    console.log('id: ', id)
+    connection.query(`SELECT * FROM coins
+    JOIN coin_details ON coins.id = coin_details.id
+    WHERE coins.id = ${id}
+    ;`, (err, data) => {
+        if (!err) {
+            res.json(data)
+        } else {
+            console.log('error: ', err)
+            res.status(500).json()
+    
+        }
+    })
+})
+
 app.listen(PORT, () => {
     console.log('listening to port: ', PORT)
 })

@@ -1,0 +1,42 @@
+.details-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+.images-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.coin-desc {
+    max-width: 452px;
+    padding-inline: 43px;
+    padding-top: 19px;
+    background-color: #C4C4C4;
+}
+
+
+.image-front {
+    width: 300px;
+    height: 300px;
+}
+.image-back {
+    width: 300px;
+    height: 300px;
+}
+img {
+    width: 100%;
+}
+
+.coin-metadata-row {
+    display: flex;
+}
+.data-label {
+    flex: 1;
+}
+.data-value {
+    flex: 1;
+}
+.coin-metadata-row:nth-child(2n+1) {
+    background-color: #fff;
+}

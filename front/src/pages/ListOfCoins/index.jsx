@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { getCoins } from "../../api/getCoins"
 
 const ListOfCoins = () => {
@@ -28,13 +28,15 @@ const ListOfCoins = () => {
             <div className="categories">
                 {
                     products.map(item => (
-                        <div className="category" key={item.id}>
-                            <p className="category-name">{item.title}</p>
-                            <p className="category-name">{item.short_desc}</p>
-                            <div>
-                                <img className="category-image" src={item.image} alt="category pic" />
+                        <Link to={`/coins/${item.id}`}>
+                            <div className="category" key={item.id}>
+                                <p className="category-name">{item.title}</p>
+                                <p className="category-name">{item.short_desc}</p>
+                                <div>
+                                    <img className="category-image" src={item.image} alt="category pic" />
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 }
             </div>
