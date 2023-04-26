@@ -15,17 +15,7 @@ const CoinDetails = () => {
         getCoinDetails(id).then(data => setCoin(data[0]))
     }, [])
 
-    const image = coin?.image
-    const back_image = coin?.back_image;
-    const issuing_country = coin?.issuing_country;
-    const composition = coin?.composition
-    const quality = coin?.quality
-    const denomination = coin?.denomination;
-    const year = coin?.year;
-    const weight = coin?.weight;
-    const price = coin?.price;
-
-    // const { image, back_image, issuing_country, composition, quality, denomination, year, weight, price } = coin;
+    const { image, back_image, issuing_country, composition, quality, denomination, year, weight, price } = coin;
 
     return (
         <div className="details-wrapper">

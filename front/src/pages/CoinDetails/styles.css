@@ -30,9 +30,14 @@ img {
 
 .coin-metadata-row {
     display: flex;
+    font-size: 10px;
+    align-items: center;
+    height: 20px;
 }
 .data-label {
     flex: 1;
+    border-right: 1px solid #B1ABAB;
+
 }
 .data-value {
     flex: 1;
