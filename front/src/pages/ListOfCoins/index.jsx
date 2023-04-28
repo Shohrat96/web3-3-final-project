@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { getCoins } from "../../api/getCoins"
 import './styles.css';
+import SearchForm from "../../components/SearchForm";
 
 const ListOfCoins = () => {
     const params = useParams()
@@ -21,13 +22,7 @@ const ListOfCoins = () => {
     return (
         <div>
             <h1>List Of Coins</h1>
-            <form onSubmit={() => { }} className="form">
-                <label>
-                    <p>Input field</p>
-                    <input className="category-input" name="search" value={'test'} onChange={() => { }} />
-                    <input className="search-btn" type="submit" value="Search" />
-                </label>
-            </form>
+            <SearchForm/>
             <div className="coins">
                 {
                     products.map(item => (

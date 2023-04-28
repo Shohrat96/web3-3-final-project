@@ -42,9 +42,12 @@ const SearchForm = ({ submitFormHandler }) => {
             e.preventDefault()
             const formData = new FormData(e.target);
             const formDataToArray = [...formData.entries()]
+            console.log('formDataToArray: ', formDataToArray)
             const finalData = {}
             formDataToArray.forEach(item => {
-                finalData[item[0]] = item[1]
+                if (item[1]) {
+                    finalData[item[0]] = item[1]
+                }
             })
             setUrlSearch(finalData)
             submitFormHandler(finalData)
