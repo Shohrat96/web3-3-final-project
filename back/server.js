@@ -60,14 +60,66 @@ app.get("/coins/:id", (req, res) => {
     connection.query(`SELECT * FROM coins
     JOIN coin_details ON coins.id = coin_details.id
     WHERE coins.id = ${id}
-    ;`, (err, data) => {
+    ;`, (err, coin_details) => {
         if (!err) {
-            res.json(data)
+
+            // get coin paragraphs
+            connection.query(`SELECT * FROM coin_paragraphs WHERE coin_paragraphs.coin_id = ${id};`, (err, coin_paragraphs) => {
+                if (!err) {
+                    console.log('data joined: ', coin_details.concat(coin_paragraphs))
+                    res.json({
+                        coin_metadata: coin_details[0],
+                        coin_paragraphs
+                    })
+                }
+            })
         } else {
             console.log('error: ', err)
             res.status(500).json()
     
         }
+    })
+})
+
+app.get('/listOfCoins', (req, res) => {
+    const searchQuery = req.query;
+    const searchQueryArr = []
+    if (searchQuery.country) {
+        searchQueryArr.push(`issuing_country LIKE '%${searchQuery.country}%'`)
+    }
+    if (searchQuery.search) {
+        searchQueryArr.push(`title LIKE '%${searchQuery.search}%' OR short_desc LIKE '%${searchQuery.search}%'`)
+    }
+    if (searchQuery.metal) {
+        searchQueryArr.push(`composition LIKE '%${searchQuery.metal}%'`)
+    }
+    if (searchQuery.quality) {
+        searchQueryArr.push(`quality LIKE '%${searchQuery.quality}%'`)
+    }
+    if (searchQuery.fromPrice) {
+        searchQueryArr.push(`price > '${searchQuery.fromPrice}'`)
+    }
+    if (searchQuery.toPrice) {
+        searchQueryArr.push(`price < '${searchQuery.toPrice}'`)
+    }
+    if (searchQuery.fromYear) {
+        searchQueryArr.push(`year > '${searchQuery.fromYear}'`)
+    }
+    if (searchQuery.toYear) {
+        searchQueryArr.push(`year < '${searchQuery.toYear}'`)
+    }
+    const finalQuery = searchQueryArr.join(' AND ')
+    connection.query(`SELECT * FROM coins
+        JOIN coin_details ON coin_details.coin_id = coins.id
+        WHERE ${finalQuery};
+    `, (err, data) => {
+        if (!err) {
+            res.json(data)
+        } else {
+            res.json(500)
+            console.log(err)
+        }
+
     })
 })
 

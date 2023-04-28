@@ -1,0 +1,36 @@
+.coins {
+    display: flex;
+    flex-wrap: wrap;
+}
+.single-coin {
+    display: flex;
+    max-width: 50%;
+    flex: 50%;
+}
+.single-coin:not(:last-child) {
+    margin-bottom: 25px;
+}
+.single-coin-metadata {
+    display: flex;
+    flex-direction: column;
+    max-width: 224px;
+}
+
+.single-coin-image img {
+    width: 120px;
+}
+.single-coin-title {
+    color: #833AE0;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.single-coin-desc {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+}
+.single-coin-item {
+    display: flex;
+    gap: 30px;
+}

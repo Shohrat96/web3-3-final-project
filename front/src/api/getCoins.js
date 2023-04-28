@@ -6,4 +6,10 @@ export const getCoins = async (categoryId, searchQuery) => {
         const data = await res.json();
         return data
     }
+    else {
+        console.log('search query: ', searchQuery)
+        const res = await fetch(`${baseUrl}/listOfCoins?${searchQuery}`);
+        const data = await res.json();
+        return data;
+    }
 }

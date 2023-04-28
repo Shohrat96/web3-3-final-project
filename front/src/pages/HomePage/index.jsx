@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react"
 import { getCategories } from "../../api/getCategories"
 import './styles.css';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import SearchForm from "../../components/SearchForm";
 
 const HomePage = () => {
-    const [search, setSearch] = useState('')
     const [categories, setCategories] = useState([])
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
+    const [submitPressed, setSubmitPressed] = useState(false)
+
+    useEffect(() => {
+        console.log('location.search', location.search)
+        if (submitPressed) {
+            navigate({
+                pathname: '/listOfCoins',
+                search: location.search
+            });
+            setSubmitPressed(false)
+        }
+        
+      }, [submitPressed]);
 
     useEffect(() => {
         getCategories().then(data => {
@@ -15,30 +30,21 @@ const HomePage = () => {
     }, [])
 
 
-    const submitFormHandler = (e) => {
-        e.preventDefault()
-        console.log('submit event: ', e)
-        navigate("/listOfCoins")
+    const submitFormHandler = (values) => {
+        setSubmitPressed(true)
+        setSearchParams(values)
     }
 
-    const searchHandler = (e) => {
-        const searchValue = e.target.value;
-        setSearch(searchValue);
-    }
+
     return (
         <div>
             <h1>Home Page</h1>
-            <form onSubmit={submitFormHandler} className="form">
-                <label>
-                    <p>Input field</p>
-                    <input className="category-input" name="search" value={search} onChange={searchHandler} />
-                    <input className="search-btn" type="submit" value="Search" />
-                </label>
-            </form>
+            <SearchForm submitFormHandler={(formValues) => submitFormHandler(formValues)} />
+
             <div className="categories">
                 {
                     categories.map(item => (
-                        <Link to={`categories/${item.id}`}>
+                        <Link key={item.id} to={`categories/${item.id}`}>
                             <div className="category" key={item.id}>
                                 <p className="category-name">{item.name}</p>
                                 <div>

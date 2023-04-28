@@ -17,9 +17,11 @@
 .coin-desc {
     max-width: 452px;
     padding-inline: 43px;
-    padding-top: 19px;
+    padding-block: 20px;
     background-color: #C4C4C4;
     font-size: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -36,6 +38,9 @@ img {
 }
 .coin-metadata {
     margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 .coin-metadata-row {
     display: flex;
@@ -54,4 +59,15 @@ img {
 }
 .coin-metadata-row:nth-child(2n+1) {
     background-color: #fff;
+}
+
+.paragraphs-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.back-to-list {
+    text-decoration: underline;
+    margin-top: auto;
+    cursor: pointer;
 }
