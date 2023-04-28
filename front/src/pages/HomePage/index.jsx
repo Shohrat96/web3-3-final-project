@@ -12,7 +12,6 @@ const HomePage = () => {
     const [submitPressed, setSubmitPressed] = useState(false)
 
     useEffect(() => {
-        console.log('location.search', location.search)
         if (submitPressed) {
             navigate({
                 pathname: '/listOfCoins',

@@ -15,16 +15,8 @@ const ListOfCoins = () => {
                 setProducts(data)
             })
         } else {
-            getCoins('', urlSearch.toString())
-            .then(data => console.log('data: ', data))
-            .catch(err => console.log('error: ', err))
-            
-            console.log('url search: ', [...urlSearch.entries()])
+            getCoins('', urlSearch.toString()).then(data => console.log('data: ', data))
         }
-
-        // getCategories().then(data => {
-        //     setCategories(data)
-        // })
     }, [])
     return (
         <div>
