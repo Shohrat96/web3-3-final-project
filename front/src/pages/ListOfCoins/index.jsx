@@ -10,22 +10,26 @@ const ListOfCoins = () => {
     const [products, setProducts] = useState([]);
     const [urlSearch, setUrlSearch] = useSearchParams()
 
+    const searchData = [...urlSearch.entries()]
+    // console.log('urlSearch: ', [...urlSearch.entries()])
+
     useEffect(() => {
         if (id) {
             getCoins(id).then(data => {
                 setProducts(data)
             })
         } else {
-            getCoins('', urlSearch.toString()).then(data => console.log('data: ', data))
+            getCoins('', urlSearch.toString()).then(data => setProducts(data))
         }
     }, [])
+    console.log('products: ', products)
     return (
         <div>
             <h1>List Of Coins</h1>
-            <SearchForm/>
+            <SearchForm searchData={searchData}/>
             <div className="coins">
                 {
-                    products.map(item => (
+                    products?.length > 0 && products.map(item => (
                         <Link className="single-coin" to={`/coins/${item.id}`}>
                             <div className="single-coin-item" key={item.id}>
                                 <div className="single-coin-image">

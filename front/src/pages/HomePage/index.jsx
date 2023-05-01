@@ -22,7 +22,12 @@ const HomePage = () => {
         
       }, [submitPressed]);
 
+
+
     useEffect(() => {
+        if (searchParams.toString().length) {
+            setSearchParams('')
+        }
         getCategories().then(data => {
             setCategories(data)
         })

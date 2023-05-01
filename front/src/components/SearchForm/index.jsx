@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToggleAdvancedFilterIcon from "../../assets/icons/ToggleAdvancedFilterIcon";
 import './styles.css';
 import { useSearchParams } from "react-router-dom";
 
-const SearchForm = ({ submitFormHandler }) => {
+const SearchForm = ({ submitFormHandler, searchData }) => {
 
-    const [search, setSearch] = useState('')
+    // const [search, setSearch] = useState('')
     const [showAdvanced, setShowAdvanced] = useState(false);
     const [urlSearch, setUrlSearch] = useSearchParams()
 
@@ -20,6 +20,17 @@ const SearchForm = ({ submitFormHandler }) => {
         toYear: ''
     })
 
+    useEffect(() => {
+        if (searchData){
+            searchData.forEach(item => {
+                setFormValues(prevState => ({
+                    ...prevState,
+                    [item[0]]: item[1]
+                }))
+            })
+            console.log('in search data: ', searchData)
+        }
+    }, [])
     const onChangeForm = (e) => {
         setFormValues(prev => ({
             ...prev,
@@ -44,12 +55,12 @@ const SearchForm = ({ submitFormHandler }) => {
             const formDataToArray = [...formData.entries()]
             console.log('formDataToArray: ', formDataToArray)
             const finalData = {}
-            formDataToArray.forEach(item => {
+            formDataToArray.forEach(item => { // [ country: Canada ]
                 if (item[1]) {
                     finalData[item[0]] = item[1]
                 }
             })
-            setUrlSearch(finalData)
+            // setUrlSearch(finalData)
             submitFormHandler(finalData)
         }} className="form">
             <label>
@@ -78,6 +89,7 @@ const SearchForm = ({ submitFormHandler }) => {
                                 <select value={formValues.metal} name="metal" className="input select-metal">
                                     <option value="gold">Gold</option>
                                     <option value="silver">Silver</option>
+                                    <option value="nickel">Nickel</option>
                                 </select>
                             </div>
 
@@ -85,6 +97,7 @@ const SearchForm = ({ submitFormHandler }) => {
                                 <p>Quality of the coin</p>
                                 <select defaultValue="proof" value={formValues.quality} name="quality" className="input select-quality">
                                     <option value="proof">Proof</option>
+                                    <option value="bu">BU</option>
                                 </select>
                             </div>
 
@@ -96,11 +109,11 @@ const SearchForm = ({ submitFormHandler }) => {
                                 <div>
                                     <label>
                                         from
-                                        <input name="fromPrice" type="number" className="range-input input" />
+                                        <input value={formValues.fromPrice} name="fromPrice" type="number" className="range-input input" />
                                     </label>
                                     <label>
                                         to
-                                        <input name="toPrice" type="number" className="range-input input" />
+                                        <input value={formValues.toPrice} name="toPrice" type="number" className="range-input input" />
                                     </label>
                                 </div>
                             </div>
@@ -110,11 +123,11 @@ const SearchForm = ({ submitFormHandler }) => {
                                 <div>
                                     <label>
                                         from
-                                        <input name="fromYear" type="number" className="input range-input" />
+                                        <input value={formValues.fromYear} name="fromYear" type="number" className="input range-input" />
                                     </label>
                                     <label>
                                         to
-                                        <input name="toYear" type="number" className="input range-input" />
+                                        <input value={formValues.toYear} name="toYear" type="number" className="input range-input" />
                                     </label>
                                 </div>
                             </div>

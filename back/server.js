@@ -82,7 +82,8 @@ app.get("/coins/:id", (req, res) => {
 })
 
 app.get('/listOfCoins', (req, res) => {
-    const searchQuery = req.query;
+    // ?country=Canadian&metal=Nickel&sdfsd=fsdfsd
+    const searchQuery = req.query; // { country: cana }
     const searchQueryArr = []
     if (searchQuery.country) {
         searchQueryArr.push(`issuing_country LIKE '%${searchQuery.country}%'`)
@@ -108,7 +109,9 @@ app.get('/listOfCoins', (req, res) => {
     if (searchQuery.toYear) {
         searchQueryArr.push(`year < '${searchQuery.toYear}'`)
     }
+    
     const finalQuery = searchQueryArr.join(' AND ')
+
     connection.query(`SELECT * FROM coins
         JOIN coin_details ON coin_details.coin_id = coins.id
         WHERE ${finalQuery};
@@ -116,7 +119,7 @@ app.get('/listOfCoins', (req, res) => {
         if (!err) {
             res.json(data)
         } else {
-            res.json(500)
+            res.status(500).send()
             console.log(err)
         }
 
