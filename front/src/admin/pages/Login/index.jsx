@@ -1,12 +1,29 @@
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../../api/login';
 import './styles.css';
+import { useContext } from 'react';
+import { UserContext } from '../../../context/userContext';
 
 const LoginPage = () => {
-
-    const loginHandler = (e) => {
+    const navigate = useNavigate()
+    const { loginHandler: setLoggedIn } = useContext(UserContext);
+    const loginHandler = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const formEntries = [...formData.entries()]
-        console.log('form data: ', formEntries)
+        const payload = {
+            email: formData.get('email'),
+            password: formData.get('password')
+        }
+        try {
+            const loginUser = await login(payload)
+            if (loginUser.isAdmin) {
+                setLoggedIn()
+                navigate('/admin')
+            }
+            console.log('loginUser: ', loginUser)
+        } catch (error) {
+            console.log('error: ', error)
+        }
     }
     return (
         <div className='admin-page'>
@@ -26,7 +43,7 @@ const LoginPage = () => {
                         </label>
                     </div>
                     <div className='submit-btn'>
-                        <button type="submit">Sign in</button>
+                        <button className="login-btn" type="submit">Sign in</button>
                     </div>
                 </form>
             </div>

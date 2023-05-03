@@ -28,7 +28,6 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
                     [item[0]]: item[1]
                 }))
             })
-            console.log('in search data: ', searchData)
         }
     }, [])
     const onChangeForm = (e) => {
@@ -36,18 +35,8 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
             ...prev,
             [e.target.name]: e.target.value
         }))
-        console.log('name: ', e.target.name)
-        console.log('value: ', e.target.value)
     }
 
-    // const searchHandler = (e) => {
-    //     const searchValue = e.target.value;
-    //     setSearch(searchValue);
-    // }
-
-    const onSelectHandler = (e) => {
-        console.log(e.target.value)
-    }
     return (
         <form onChange={onChangeForm} onSubmit={(e) => {
             e.preventDefault()
@@ -60,7 +49,6 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
                     finalData[item[0]] = item[1]
                 }
             })
-            // setUrlSearch(finalData)
             submitFormHandler(finalData)
         }} className="form">
             <label>

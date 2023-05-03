@@ -8,15 +8,11 @@ const ListOfCoins = () => {
     const params = useParams()
     const { id } = params;
     const [products, setProducts] = useState([]);
-    const [urlSearch, setUrlSearch] = useSearchParams()
-    const [submitPressed, setSubmitPressed] = useState(false)
     const [searchParams, setSearchParams] = useSearchParams()
     
-    const navigate = useNavigate()
-    const location = useLocation()
 
-    const searchData = [...urlSearch.entries()]
-    // console.log('urlSearch: ', [...urlSearch.entries()])
+    const searchData = [...searchParams.entries()]
+    // console.log('searchParams: ', [...searchParams.entries()])
 
     useEffect(() => {
         if (id) {
@@ -24,7 +20,7 @@ const ListOfCoins = () => {
                 setProducts(data)
             })
         } else {
-            getCoins('', urlSearch.toString()).then(data => setProducts(data))
+            getCoins('', searchParams.toString()).then(data => setProducts(data))
         }
     }, [searchParams])
 

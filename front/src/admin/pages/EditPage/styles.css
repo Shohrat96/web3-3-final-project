@@ -1,0 +1,39 @@
+.add-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 25px;
+}
+.add-form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.desc {
+    height: 136px;
+    resize: none;
+}
+
+.first-col {
+
+}
+
+.form-actions {
+    margin-top: auto;
+    margin-inline: auto;
+    display: flex;
+    gap: 30px;
+}
+.form-actions button {
+    width: 120px;
+    height: 48px;
+    border: none;
+    cursor: pointer;
+}
+.btn-save {
+    background-color: #833AE0;
+    color: #fff;
+}
+.btn-cancel {
+    background-color: #E1E1E1;
+}

@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: 'SalamSalam123!@#',
+  password: 'test',
   database: 'final_project'
 });
 
@@ -125,6 +125,48 @@ app.get('/listOfCoins', (req, res) => {
             console.log(err)
         }
 
+    })
+})
+
+app.post('/login', (req, res) => {
+    const {email, password} = req.body
+    console.log('req body: ', req.body)
+    connection.query(`SELECT * FROM users WHERE email = '${email}';`, (err, data) => {
+        if (err || data.length === 0) {
+            console.log('error: ', err)
+            res.status(404).send()
+        } else {
+            if (data) {
+                const adminUser = data[0]
+                if (adminUser.password === password) {
+                    res.json({
+                        isAdmin: true
+                    })
+                } else {
+                    res.status(401).json({
+                        authError: 'Invalid password'
+                    })
+                }
+
+            }
+        }
+    })
+})
+
+app.post('/admin/add', (req, res) => {
+    const { name, year_of_issue, search, country, metal, short_desc, quality, weight, front_image, reverse_image, category_id } = req.body
+    const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
+    const query2 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
+
+    console.log('query: ', query1)
+    connection.query(query1, (err, data) => {
+        if (err) {
+            console.log('error in post: ', err)
+            res.send()
+        }
+        else {
+            res.json(data)
+        }
     })
 })
 
