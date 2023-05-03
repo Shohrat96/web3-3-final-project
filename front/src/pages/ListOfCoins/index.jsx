@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { Link, useParams, useSearchParams, useNavigate, useLocation } from "react-router-dom"
 import { getCoins } from "../../api/getCoins"
 import './styles.css';
 import SearchForm from "../../components/SearchForm";
@@ -9,6 +9,11 @@ const ListOfCoins = () => {
     const { id } = params;
     const [products, setProducts] = useState([]);
     const [urlSearch, setUrlSearch] = useSearchParams()
+    const [submitPressed, setSubmitPressed] = useState(false)
+    const [searchParams, setSearchParams] = useSearchParams()
+    
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const searchData = [...urlSearch.entries()]
     // console.log('urlSearch: ', [...urlSearch.entries()])
@@ -21,12 +26,18 @@ const ListOfCoins = () => {
         } else {
             getCoins('', urlSearch.toString()).then(data => setProducts(data))
         }
-    }, [])
+    }, [searchParams])
+
+    const submitFormHandler = (values) => {
+        setSearchParams(values, {
+            replace: true
+        })
+    }
     console.log('products: ', products)
     return (
         <div>
             <h1>List Of Coins</h1>
-            <SearchForm searchData={searchData}/>
+            <SearchForm submitFormHandler={(formValues) => submitFormHandler(formValues)} searchData={searchData}/>
             <div className="coins">
                 {
                     products?.length > 0 && products.map(item => (
