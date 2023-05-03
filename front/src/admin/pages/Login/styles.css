@@ -1,0 +1,43 @@
+.admin-page {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+.admin-page-title {
+    font-weight: 300;
+    font-size: 50px;
+}
+.form-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.admin-page-form {
+}
+.form-login {
+    margin-bottom: 20px;
+}
+input {
+    width: 374px;
+    height: 48px;
+    margin-top: 5px;
+    border: 1px solid #000;
+}
+label {
+    font-weight: 500;
+    font-size: 14px;
+}
+button {
+    width: 120px;
+    height: 48px;
+    background-color:#833AE0;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-top: 30px;
+}
+.submit-btn {
+    display: flex;
+    justify-content: center;
+}
