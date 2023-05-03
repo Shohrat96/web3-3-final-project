@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import ListOfCoins from './pages/ListOfCoins';
 import CoinDetails from './pages/CoinDetails';
+import AdminPanel from './admin';
+import LoginPage from './admin/pages/Login';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path='/listOfCoins' element={<ListOfCoins/>} />
           <Route path='/categories/:id' element={<ListOfCoins/>} />
           <Route path='/coins/:id' element={<CoinDetails/>} />
+          <Route path='/login' element={<LoginPage/>} />
+          <Route path='/admin/*' element={<AdminPanel/>} />
         </Routes>
       </BrowserRouter>
     </div>

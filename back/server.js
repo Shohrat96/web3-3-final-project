@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: 'test',
+  password: 'SalamSalam123!@#',
   database: 'final_project'
 });
 
@@ -83,13 +83,13 @@ app.get("/coins/:id", (req, res) => {
 
 app.get('/listOfCoins', (req, res) => {
     // ?country=Canadian&metal=Nickel&sdfsd=fsdfsd
-    const searchQuery = req.query; // { country: cana }
+    const searchQuery = req.query;
     const searchQueryArr = []
     if (searchQuery.country) {
         searchQueryArr.push(`issuing_country LIKE '%${searchQuery.country}%'`)
     }
     if (searchQuery.search) {
-        searchQueryArr.push(`title LIKE '%${searchQuery.search}%' OR short_desc LIKE '%${searchQuery.search}%'`)
+        searchQueryArr.push(`(title LIKE '%${searchQuery.search}%' OR short_desc LIKE '%${searchQuery.search}%')`)
     }
     if (searchQuery.metal) {
         searchQueryArr.push(`composition LIKE '%${searchQuery.metal}%'`)
@@ -112,10 +112,12 @@ app.get('/listOfCoins', (req, res) => {
     
     const finalQuery = searchQueryArr.join(' AND ')
 
-    connection.query(`SELECT * FROM coins
-        JOIN coin_details ON coin_details.coin_id = coins.id
-        WHERE ${finalQuery};
-    `, (err, data) => {
+    const sqlQuery = `SELECT * FROM coins
+    JOIN coin_details ON coin_details.coin_id = coins.id
+    WHERE ${finalQuery};`
+
+    console.log('sqlQuery: ', sqlQuery)
+    connection.query(sqlQuery, (err, data) => {
         if (!err) {
             res.json(data)
         } else {
