@@ -44,7 +44,9 @@ const CoinsManagePage = () => {
               <div className="coin-actions">
                 <button onClick={() => navigate(`edit/${item.id}`)} className="coin-edit">Edit</button>
                 <button onClick={() => {
-                  deleteCoin(item.id)
+                  deleteCoin(item.id).then(() => {
+                    setProducts(prev => prev.filter(el => el.id !== item.id))
+                  })
                 }} className="coin-delete">Delete</button>
               </div>
             </div>

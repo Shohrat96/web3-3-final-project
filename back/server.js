@@ -214,23 +214,28 @@ app.get('/qualities', (req, res) => {
 app.delete('/coin/:id', (req, res) => {
     const  id  = +req.params.id;
     console.log('delete id: ', id )
-    const sql = `DELETE coins, coin_details FROM coins LEFT JOIN coin_details ON coins.id = coin_details.coin_id WHERE coins.id = '${id}'`;
-    connection.query(sql, (err, data) => {
-        if (!err) {
-            res.json({deleted: true})
-        } else {
-            console.log('error in delete: ', err)
-        }
-    })
-    // connection.query(`DELETE FROM coins WHERE id = '${id}';`, (errCoin, data) => {
-    //     if (!errCoin) {
-    //         connection.query(`DELETE FROM coin_details WHERE coin_id = '${id}'`, (errDetails, data) => {
-    //             if (!errDetails) {
-    //                 res.json({deleted: true})
-    //             }
-    //         })
+    // const sql = `DELETE coins, coin_details FROM coins LEFT JOIN coin_details ON coins.id = coin_details.coin_id WHERE coins.id = '${id}'`;
+    // connection.query(sql, (err, data) => {
+    //     if (!err) {
+    //         res.json({deleted: true})
+    //     } else {
+    //         console.log('error in delete: ', err)
     //     }
     // })
+    
+    connection.query(`DELETE FROM coin_details WHERE coin_id = '${id}'`, (errDetails, data) => {
+        if (!errDetails) {
+            connection.query(`DELETE FROM coins WHERE id = '${id}';`, (errCoin, data) => {
+                if (!errCoin) {
+                    res.json({deleted: true})
+                } else {
+                    console.log('error in delete coin detail: ', errCoin)
+                }
+            })
+        } else {
+            console.log('error in coin errDetails delete: ', errDetails)
+        }
+    })
 })
 
 app.listen(PORT, () => {
