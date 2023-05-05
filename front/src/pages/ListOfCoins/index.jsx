@@ -5,6 +5,8 @@ import './styles.css';
 import SearchForm from "../../components/SearchForm";
 
 const ListOfCoins = () => {
+    const navigate = useNavigate()
+    const location = useLocation()
     const params = useParams()
     const { id } = params;
     const [products, setProducts] = useState([]);
@@ -15,21 +17,28 @@ const ListOfCoins = () => {
     // console.log('searchParams: ', [...searchParams.entries()])
 
     useEffect(() => {
-        if (id) {
+
+        if (id && !searchParams.toString().length) {
             getCoins(id).then(data => {
                 setProducts(data)
             })
         } else {
+            navigate({
+                pathname: '/listOfCoins',
+                search: location.search
+            }, {
+                replace: true
+            })
             getCoins('', searchParams.toString()).then(data => setProducts(data))
         }
     }, [searchParams])
 
     const submitFormHandler = (values) => {
-        setSearchParams(values, {
-            replace: true
-        })
+        setSearchParams(values)
+
     }
-    console.log('products: ', products)
+
+    // useEffect(())
     return (
         <div>
             <h1>List Of Coins</h1>

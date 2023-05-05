@@ -1,7 +1,27 @@
+import { useEffect, useState } from 'react';
 import { addNewCoin } from '../../../api/addNewCoin';
 import './styles.css';
+import { getCategories } from '../../../api/getCategories';
 
 const EditPage = () => {
+
+  const [categories, setCategories] = useState([])
+
+
+  useEffect(() => {
+    getCategories().then(data => { // [{id, name, image}]
+      const categoriesArr = []
+
+      data.forEach(item => {
+        const { id, name } = item
+        categoriesArr.push({
+          id,
+          name
+        })
+      })
+      setCategories(categoriesArr)
+    })
+  }, [])
 
   const submitFormHandler = (e) => {
     e.preventDefault()
@@ -29,7 +49,7 @@ const EditPage = () => {
           </label>
           <label>
             <p>Price</p>
-            <input type='number' className="input" name="search" />
+            <input type='number' className="input" name="price" />
           </label>
           <label>
             <p>Country</p>
@@ -41,7 +61,15 @@ const EditPage = () => {
           </label>
           <label>
             <p>Category id</p>
-            <input type='number' className="input" name="category_id" />
+            <select className='input select-category' name="category_id">
+              <option value="">Select Country</option>
+                {
+                  categories?.map(item => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                  ))
+                }
+            </select>
+            {/* <input type='number' className="input" name="category_id" /> */}
           </label>
         </div>
 

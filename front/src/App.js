@@ -16,16 +16,20 @@ import UserContextProvider from './context/userContext';
 function App() {
   return (
     <div className='app'>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/listOfCoins' element={<ListOfCoins />} />
-          <Route path='/categories/:id' element={<ListOfCoins />} />
-          <Route path='/coins/:id' element={<CoinDetails />} />
-          <Route path='/login' element={<UserContextProvider><LoginPage/></UserContextProvider>} />
-          <Route path='/admin/*' element={<UserContextProvider><AdminPanel/></UserContextProvider>} />
-        </Routes>
-      </BrowserRouter>
+      <UserContextProvider>
+
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/listOfCoins' element={<ListOfCoins />} />
+            <Route path='/categories/:id' element={<ListOfCoins />} />
+            <Route path='/coins/:id' element={<CoinDetails />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/admin/*' element={<AdminPanel />} />
+          </Routes>
+        </BrowserRouter>
+      </UserContextProvider>
+
     </div>
   );
 }

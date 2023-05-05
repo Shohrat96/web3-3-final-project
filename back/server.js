@@ -58,11 +58,10 @@ app.get("/coins/:id", (req, res) => {
     const id = +req.params.id;
     console.log('id: ', id)
     connection.query(`SELECT * FROM coins
-    JOIN coin_details ON coins.id = coin_details.id
+    JOIN coin_details ON coins.id = coin_details.coin_id
     WHERE coins.id = ${id}
     ;`, (err, coin_details) => {
         if (!err) {
-
             // get coin paragraphs
             connection.query(`SELECT * FROM coin_paragraphs WHERE coin_paragraphs.coin_id = ${id};`, (err, coin_paragraphs) => {
                 if (!err) {
@@ -112,13 +111,14 @@ app.get('/listOfCoins', (req, res) => {
     
     const finalQuery = searchQueryArr.join(' AND ')
 
-    const sqlQuery = `SELECT * FROM coins
+    const sqlQuery = `SELECT coins.id,  coins.title, coins.short_desc, coins.image, coins.category_id FROM coins
     JOIN coin_details ON coin_details.coin_id = coins.id
     WHERE ${finalQuery};`
 
     console.log('sqlQuery: ', sqlQuery)
     connection.query(sqlQuery, (err, data) => {
         if (!err) {
+            console.log(data)
             res.json(data)
         } else {
             res.status(500).send()
@@ -154,9 +154,8 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/admin/add', (req, res) => {
-    const { name, year_of_issue, search, country, metal, short_desc, quality, weight, front_image, reverse_image, category_id } = req.body
+    const { name, year_of_issue, face_value, country, metal, short_desc, quality, weight, front_image, reverse_image, category_id, price } = req.body
     const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
-    const query2 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
 
     console.log('query: ', query1)
     connection.query(query1, (err, data) => {
@@ -165,9 +164,73 @@ app.post('/admin/add', (req, res) => {
             res.send()
         }
         else {
-            res.json(data)
+            const {insertId} = data
+
+            const query2 = `INSERT INTO coin_details (coin_id, issuing_country, composition, quality, denomination, year, weight, price, back_image) VALUES ('${insertId}', '${country}', '${metal}', '${quality}', '${face_value}', '${year_of_issue}', '${weight}', '${price}', '${reverse_image}');`
+
+            connection.query(query2, (err, data) => {
+                if (!err) {
+                    res.json({success: true})
+                } else {
+                    console.log('error in coin_details: ', err)
+                }
+            })
         }
     })
+})
+
+app.get('/countries', (req, res) => {
+    const query = 'SELECT DISTINCT issuing_country FROM coin_details;'
+    connection.query(query, (err, data) => {
+        if (!err) {
+            res.json(data)
+        } else {
+            res.status(500).send()
+        }
+    })
+})
+app.get('/composition', (req, res) => {
+    const query = 'SELECT DISTINCT composition FROM coin_details;'
+    connection.query(query, (err, data) => {
+        if (!err) {
+            res.json(data)
+        } else {
+            res.status(500).send()
+        }
+    })
+})
+
+app.get('/qualities', (req, res) => {
+    const query = 'SELECT DISTINCT quality FROM coin_details;'
+    connection.query(query, (err, data) => {
+        if (!err) {
+            res.json(data)
+        } else {
+            res.status(500).send()
+        }
+    })
+})
+
+app.delete('/coin/:id', (req, res) => {
+    const  id  = +req.params.id;
+    console.log('delete id: ', id )
+    const sql = `DELETE coins, coin_details FROM coins LEFT JOIN coin_details ON coins.id = coin_details.coin_id WHERE coins.id = '${id}'`;
+    connection.query(sql, (err, data) => {
+        if (!err) {
+            res.json({deleted: true})
+        } else {
+            console.log('error in delete: ', err)
+        }
+    })
+    // connection.query(`DELETE FROM coins WHERE id = '${id}';`, (errCoin, data) => {
+    //     if (!errCoin) {
+    //         connection.query(`DELETE FROM coin_details WHERE coin_id = '${id}'`, (errDetails, data) => {
+    //             if (!errDetails) {
+    //                 res.json({deleted: true})
+    //             }
+    //         })
+    //     }
+    // })
 })
 
 app.listen(PORT, () => {

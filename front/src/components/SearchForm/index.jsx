@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import ToggleAdvancedFilterIcon from "../../assets/icons/ToggleAdvancedFilterIcon";
 import './styles.css';
 import { useSearchParams } from "react-router-dom";
+import { getCountries } from "../../api/getCountries";
+import { getComposition } from "../../api/getComposition";
+import { getQualities } from "../../api/getQualities";
 
 const SearchForm = ({ submitFormHandler, searchData }) => {
+
+    const [countries, setCountries] = useState([]);
+    const [compositions, setCompositions] = useState([]);
+    const [qualities, setQualities] = useState([]);
 
     // const [search, setSearch] = useState('')
     const [showAdvanced, setShowAdvanced] = useState(false);
@@ -13,7 +20,7 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
         search: '',
         country: '',
         metal: '',
-        quality: 'proof',
+        quality: '',
         fromPrice: '',
         toPrice: '',
         fromYear: '',
@@ -29,6 +36,10 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
                 }))
             })
         }
+
+        getCountries().then(data => setCountries(data))
+        getComposition().then(data => setCompositions(data))
+        getQualities().then(data => setQualities(data))
     }, [])
     const onChangeForm = (e) => {
         setFormValues(prev => ({
@@ -68,24 +79,38 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
                             <div>
                                 <p>Issuing country</p>
                                 <select value={formValues.country} name="country" className="input select-country">
-                                    <option value="canada">Canada</option>
-                                    <option value="america">America</option>
+                                    {
+                                        countries?.map((country, idx) => (
+                                            <option key={idx} value={country.issuing_country}>{country.issuing_country}</option>
+                                        ))
+                                    }
+                                    {/* <option value="canada">Canada</option>
+                                    <option value="america">America</option> */}
                                 </select>
                             </div>
                             <div>
                                 <p>Metal</p>
-                                <select value={formValues.metal} name="metal" className="input select-metal">
-                                    <option value="gold">Gold</option>
-                                    <option value="silver">Silver</option>
-                                    <option value="nickel">Nickel</option>
+                                <select defaultValue="" value={formValues.metal} name="metal" className="input select-metal">
+                                    <option value="">Select a option</option>
+                                    {
+                                        compositions?.map((item, idx) => (
+                                            <option key={idx} value={item.composition}>{item.composition}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
 
                             <div>
                                 <p>Quality of the coin</p>
-                                <select defaultValue="proof" value={formValues.quality} name="quality" className="input select-quality">
-                                    <option value="proof">Proof</option>
-                                    <option value="bu">BU</option>
+                                <select defaultValue="" value={formValues.quality} name="quality" className="input select-quality">
+                                    <option value="">Select a option</option>
+                                    {
+                                        qualities?.map((item, index) => (
+                                            <option key={index} value={item.quality}>{item.quality}</option>
+                                        ))
+                                    }
+                                    {/* <option value="proof">Proof</option>
+                                    <option value="bu">BU</option> */}
                                 </select>
                             </div>
 
