@@ -45,7 +45,6 @@ app.get('/categories/:id', (req, res) => {
     connection.query(
         `SELECT * FROM coins WHERE category_id = ${id}`, (err, data) => {
             if (!err) {
-                console.log("data: ", data)
                 res.json(data)
             } else {
                 res.status(500).json()
@@ -56,7 +55,6 @@ app.get('/categories/:id', (req, res) => {
 
 app.get("/coins/:id", (req, res) => {
     const id = +req.params.id;
-    console.log('id: ', id)
     connection.query(`SELECT * FROM coins
     JOIN coin_details ON coins.id = coin_details.coin_id
     WHERE coins.id = ${id}
@@ -65,7 +63,6 @@ app.get("/coins/:id", (req, res) => {
             // get coin paragraphs
             connection.query(`SELECT * FROM coin_paragraphs WHERE coin_paragraphs.coin_id = ${id};`, (err, coin_paragraphs) => {
                 if (!err) {
-                    console.log('data joined: ', coin_details.concat(coin_paragraphs))
                     res.json({
                         coin_metadata: coin_details[0],
                         coin_paragraphs
@@ -115,10 +112,8 @@ app.get('/listOfCoins', (req, res) => {
     JOIN coin_details ON coin_details.coin_id = coins.id
     WHERE ${finalQuery};`
 
-    console.log('sqlQuery: ', sqlQuery)
     connection.query(sqlQuery, (err, data) => {
         if (!err) {
-            console.log(data)
             res.json(data)
         } else {
             res.status(500).send()
@@ -130,7 +125,6 @@ app.get('/listOfCoins', (req, res) => {
 
 app.post('/login', (req, res) => {
     const {email, password} = req.body
-    console.log('req body: ', req.body)
     connection.query(`SELECT * FROM users WHERE email = '${email}';`, (err, data) => {
         if (err || data.length === 0) {
             console.log('error: ', err)
@@ -157,7 +151,6 @@ app.post('/admin/add', (req, res) => {
     const { name, year_of_issue, face_value, country, metal, short_desc, quality, weight, front_image, reverse_image, category_id, price } = req.body
     const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
 
-    console.log('query: ', query1)
     connection.query(query1, (err, data) => {
         if (err) {
             console.log('error in post: ', err)
@@ -178,6 +171,53 @@ app.post('/admin/add', (req, res) => {
         }
     })
 })
+
+
+app.put('/admin/edit/:id', (req, res) => {
+    const id = +req.params.id
+    const { simpleData, detailedData } = req.body;
+
+    if (simpleData) {
+        const columns = Object.keys(simpleData);
+        const updateString = columns.map((column) => `${column} = ?`).join(', ');
+        //   'title = Lonney-2?, short_desc = 'fsdfsdf'?'
+        const query = `UPDATE coins SET ${updateString} WHERE id = ?`;
+
+        const values = [...Object.values(simpleData), id];
+
+        connection.query(query, values, (err, res) => {
+            if (err) {
+                console.log('err in edit: ', err)
+            } else {
+                console.log('success edit')
+            }
+        })
+    }
+
+    if (detailedData) {
+        const columns = Object.keys(detailedData);
+        const updateString = columns.map((column) => `${column} = ?`).join(', ');
+        //   'title = Lonney-2?, short_desc = 'fsdfsdf'?'
+        const query = `UPDATE coin_details SET ${updateString} WHERE id = ?`;
+
+        const values = [...Object.values(detailedData), id];
+
+        connection.query(query, values, (err, res) => {
+            if (err) {
+                console.log('err in edit: ', err)
+            } else {
+                console.log('success edit')
+            }
+        })
+    }
+
+
+    // const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
+
+    
+})
+
+
 
 app.get('/countries', (req, res) => {
     const query = 'SELECT DISTINCT issuing_country FROM coin_details;'
@@ -213,15 +253,6 @@ app.get('/qualities', (req, res) => {
 
 app.delete('/coin/:id', (req, res) => {
     const  id  = +req.params.id;
-    console.log('delete id: ', id )
-    // const sql = `DELETE coins, coin_details FROM coins LEFT JOIN coin_details ON coins.id = coin_details.coin_id WHERE coins.id = '${id}'`;
-    // connection.query(sql, (err, data) => {
-    //     if (!err) {
-    //         res.json({deleted: true})
-    //     } else {
-    //         console.log('error in delete: ', err)
-    //     }
-    // })
     
     connection.query(`DELETE FROM coin_details WHERE coin_id = '${id}'`, (errDetails, data) => {
         if (!errDetails) {

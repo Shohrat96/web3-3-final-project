@@ -14,7 +14,6 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
 
     // const [search, setSearch] = useState('')
     const [showAdvanced, setShowAdvanced] = useState(false);
-    const [urlSearch, setUrlSearch] = useSearchParams()
 
     const [formValues, setFormValues] = useState({
         search: '',
