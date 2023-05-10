@@ -20,7 +20,6 @@ const LoginPage = () => {
                 setLoggedIn()
                 navigate('/admin')
             }
-            console.log('loginUser: ', loginUser)
         } catch (error) {
             console.log('error: ', error)
         }

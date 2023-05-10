@@ -40,3 +40,14 @@
 .select-category {
     border: 1px solid #000;
 }
+.ant-upload-picture-circle-wrapper {
+    width: auto !important;
+}
+.ant-upload-picture-circle-wrapper > div {
+    margin: 0 !important;
+}
+.upload-btn-label {
+    font-weight: 300;
+    text-decoration: underline;
+    margin-left: 30px;
+}

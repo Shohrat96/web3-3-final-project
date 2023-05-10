@@ -52,7 +52,6 @@ const SearchForm = ({ submitFormHandler, searchData }) => {
             e.preventDefault()
             const formData = new FormData(e.target);
             const formDataToArray = [...formData.entries()]
-            console.log('formDataToArray: ', formDataToArray)
             const finalData = {}
             formDataToArray.forEach(item => { // [ country: Canada ]
                 if (item[1]) {

@@ -8,7 +8,6 @@ const CoinDetails = () => {
     const { id } = useParams()
     const [coin, setCoin] = useState({});
 
-    console.log('single coin data: ', coin);
 
     useEffect(() => {
         getCoinDetails(id).then(data => setCoin(data))

@@ -14,7 +14,6 @@ const ListOfCoins = () => {
     
 
     const searchData = [...searchParams.entries()]
-    // console.log('searchParams: ', [...searchParams.entries()])
 
     useEffect(() => {
 

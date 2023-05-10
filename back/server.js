@@ -148,8 +148,9 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/admin/add', (req, res) => {
-    const { name, year_of_issue, face_value, country, metal, short_desc, quality, weight, front_image, reverse_image, category_id, price } = req.body
-    const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${name}', '${short_desc}', '${front_image}', '${category_id}');`
+    const { title, year, denomination, issuing_country, composition, short_desc, quality, weight, image, back_image, category_id, price } = req.body
+    console.log('req.body: ', req.body)
+    const query1 = `INSERT INTO coins (title, short_desc, image, category_id) VALUES ('${title}', '${short_desc}', '${image}', '${category_id}');`
 
     connection.query(query1, (err, data) => {
         if (err) {
@@ -159,7 +160,7 @@ app.post('/admin/add', (req, res) => {
         else {
             const {insertId} = data
 
-            const query2 = `INSERT INTO coin_details (coin_id, issuing_country, composition, quality, denomination, year, weight, price, back_image) VALUES ('${insertId}', '${country}', '${metal}', '${quality}', '${face_value}', '${year_of_issue}', '${weight}', '${price}', '${reverse_image}');`
+            const query2 = `INSERT INTO coin_details (coin_id, issuing_country, composition, quality, denomination, year, weight, price, back_image) VALUES ('${insertId}', '${issuing_country}', '${composition}', '${quality}', '${denomination}', '${+year}', '${weight}', '${price}', '${back_image}');`
 
             connection.query(query2, (err, data) => {
                 if (!err) {

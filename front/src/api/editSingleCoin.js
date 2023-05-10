@@ -2,7 +2,6 @@
 const baseUrl = "http://localhost:3001"
 export const editSingleCoin = async (payload) => {
     const { id, simpleData, detailedData } = payload
-    console.log('payhload in api : ', payload)
     try {
         const res = await fetch(`${baseUrl}/admin/edit/${id}`, {
             method: 'PUT',
